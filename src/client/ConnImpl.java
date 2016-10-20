@@ -1,5 +1,7 @@
 package client;
 
+import java.util.Objects;
+
 import processing.core.PApplet;
 import toxi.geom.Line2D;
 import toxi.processing.ToxiclibsSupport;
@@ -36,8 +38,22 @@ public class ConnImpl implements Connection{
 		p.gfx.line(l);
 		this.a.draw(p);
 		this.b.draw(p);
-		
-		
+	}
+	
+	@Override
+	public boolean equals(Object other){
+		if(other instanceof ConnImpl){
+			ConnImpl o  = (ConnImpl) other;
+			if(o.a.equals(this.a) && o.b.equals(this.b)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hash(this.a, this.b);
 	}
 
 }

@@ -9,6 +9,7 @@ public class Main extends PApplet {
 	Graph g;
 	Node active;
 	Node prevActive;
+	boolean delete = false;
 
 	public static void main(String[] args) {
 		PApplet.main("client.Main");
@@ -50,12 +51,16 @@ public class Main extends PApplet {
 		float mY = mouseY;
 		Node closest = g.clickNearest(mX, mY, 15);
 		if(closest!=null){
-			prevActive = active;
-			active = closest;
-			if(prevActive!=null && active!=null){
-				g.addConnection(active, prevActive);
-				prevActive = null;
-				active = null;
+			if(delete){
+				g.deleteNode(closest);
+			}else{
+				prevActive = active;
+				active = closest;
+				if(prevActive!=null && active!=null){
+					g.addConnection(active, prevActive);
+					prevActive = null;
+					active = null;
+				}
 			}
 		}else{
 			//no node is within threshold for selection
@@ -69,5 +74,22 @@ public class Main extends PApplet {
 		}
 		
 	}
+	
+	public void keyPressed(){
+		switch(key){
+			case 'd':
+			case 'D':
+				delete = !delete;
+				break;
+			default:
+				System.out.println("key pressed:"+key);
+				break;
+		}
+		
+		
+	}
+	
+	
+	
 
 }

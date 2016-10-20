@@ -2,10 +2,7 @@ package client;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import processing.core.PApplet;
 import toxi.geom.Vec2D;
-import toxi.processing.ToxiclibsSupport;
 
 public class GraphImpl implements Graph {
 	private List<Connection> connections;
@@ -79,6 +76,38 @@ public class GraphImpl implements Graph {
 			return closest;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean deleteNodeAt(float x, float y, float radius) {
+		Node n = clickNearest(x, y, radius);
+		if(n!=null && nodes.contains(n)){
+			return deleteNode(n);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean deleteNode(Node toRemove) {
+		List<Connection> removedConnections = new ArrayList<Connection>();
+		if(toRemove!=null && nodes.contains(toRemove)){
+			for(Connection c: connections){
+				Node[] pair = c.getNodePair();
+				for(int i=0; i<pair.length; i++){
+					if(pair[i].equals(toRemove)){
+						removedConnections.add(c);
+						break;
+					}
+				}
+			}
+			boolean success = true;
+			if(!removedConnections.isEmpty()){
+				success = success && connections.removeAll(removedConnections);
+			}
+			success = success && nodes.remove(toRemove);
+			return success;
+		}
+		return false;
 	}
 
 }
