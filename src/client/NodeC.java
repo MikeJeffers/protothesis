@@ -1,5 +1,6 @@
 package client;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ public class NodeC implements Node{
 		this.x = _x;
 		this.y = _y;
 		this.pt = new Vec2D(_x, _y);
+		this.neighbors = new ArrayList<Node>();
 	}
 
 
@@ -44,6 +46,28 @@ public class NodeC implements Node{
 	@Override
 	public Vec2D getPt() {
 		return this.pt;
+	}
+
+
+	@Override
+	public boolean addNeighbor(Node n) {
+		if(!neighbors.contains(n)){
+			return this.neighbors.add(n);
+		}
+		return false;
+	}
+
+
+	@Override
+	public boolean removeNeighbor(Node n) {
+		return this.neighbors.remove(n);
+		
+	}
+
+
+	@Override
+	public List<Node> getNeighbors() {
+		return this.neighbors;
 	}
 
 }

@@ -1,6 +1,7 @@
 package client;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface Graph {
@@ -14,6 +15,10 @@ public interface Graph {
 	boolean addConnection(Node a, Node b);
 	void draw(Main p);
 	Node clickNearest(float x, float y, float radius);
+	List<Node> traverseGraph(Node start, Node end);
+	Map<Node, Integer> getTraversalMap(Node start, Node end);
+	
+	
 
 
 }
