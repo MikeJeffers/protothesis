@@ -132,8 +132,6 @@ public class GraphImpl implements Graph {
 		return dfs(start, end);
 	}
 
-
-
 	private List<Node> djikstra(Node a, Node b) {
 		Comparator<Node> comparator = new NodeDistComparator(b);
 		PriorityQueue<Node> q = new PriorityQueue<Node>(comparator);
@@ -192,7 +190,7 @@ public class GraphImpl implements Graph {
 		return visited;
 
 	}
-	
+
 	@Override
 	public Map<Node, Integer> getTraversalMap(Node start, Node end) {
 		return bfsMap(start, end);
@@ -201,32 +199,36 @@ public class GraphImpl implements Graph {
 	private Map<Node, Integer> bfsMap(Node a, Node b) {
 		Queue<Node> q = new LinkedList<Node>();
 		Map<Node, Integer> visited = new HashMap<Node, Integer>();
+		Map<Node, Node> predeccesors = new HashMap<Node, Node>();
 		int step = 0;
 		visited.put(a, step);
+		predeccesors.put(a, null);
 		q.add(a);
 		if (a.equals(b)) {
 			return visited;
 		}
 		while (!q.isEmpty()) {
 			Node current = q.poll();
-			if (visited.containsKey(current)) {
-				step = visited.get(current) + 1;
+			visited.put(current, step);
+			Node prev = predeccesors.get(current);
+			if (prev != null && visited.containsKey(prev)) {
+				step = visited.get(prev) + 1;
 			} else {
-				step++;
-				visited.put(current, step);
+				step = 0;
 			}
-			if (current != null) {
-				if (a.equals(b)) {
-					return visited;
+			
+			if (current.equals(b)) {
+				return visited;
+			}
+			List<Node> nextNodes = getNeighbors(current);
+			for (Node n : nextNodes) {
+				if (!visited.containsKey(n)) {
+					q.add(n);
+					predeccesors.put(n, current);
 				}
-				List<Node> nextNodes = getNeighbors(current);
-				for (Node n : nextNodes) {
-					if (!visited.containsKey(n)) {
-						q.add(n);
-					}
 
-				}
 			}
+
 		}
 		return visited;
 	}
@@ -243,7 +245,7 @@ public class GraphImpl implements Graph {
 			Node current = q.poll();
 			visited.add(current);
 			if (current != null) {
-				if (a.equals(b)) {
+				if (current.equals(b)) {
 					return visited;
 				}
 				List<Node> nextNodes = getNeighbors(current);
@@ -278,7 +280,5 @@ public class GraphImpl implements Graph {
 		}
 		return connected;
 	}
-
-	
 
 }
