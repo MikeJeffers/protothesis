@@ -17,8 +17,8 @@ public class Main extends PApplet {
 	Node prevActive;
 	boolean delete = false;
 	boolean traverse = false;
-	//List<Node> mostRecentTraversal = new ArrayList<Node>();
-	Map<Node, Integer> mostRecentTraversal = new HashMap<Node, Integer>();
+	List<Node> mostRecentTraversal = new ArrayList<Node>();
+	//Map<Node, Integer> mostRecentTraversal = new HashMap<Node, Integer>();
 
 	public static void main(String[] args) {
 		PApplet.main("client.Main");
@@ -53,17 +53,16 @@ public class Main extends PApplet {
 			active.draw(this);
 		}
 		if(mostRecentTraversal!=null&& !mostRecentTraversal.isEmpty()){
-			for(Entry<Node, Integer> entry: mostRecentTraversal.entrySet()){
+			//for(Entry<Node, Integer> entry: mostRecentTraversal.entrySet()){
+			for(int i=0; i<mostRecentTraversal.size(); i++){
 				fill(0, 200, 0);
 				stroke(255, 0, 0);
-				
-				//text(entry.getValue(), )
-				//strokeWeight(entry.getValue());
-				entry.getKey().draw(this);
+				mostRecentTraversal.get(i).draw(this);
+				//entry.getKey().draw(this);
 				//inPath.draw(this);
 				fill(0, 255, 255);
 				
-				text(entry.getValue().toString(), entry.getKey().getPt().x, entry.getKey().getPt().y);
+				text(i, mostRecentTraversal.get(i).getPt().x, mostRecentTraversal.get(i).getPt().y);
 			}
 		}
 
@@ -81,8 +80,8 @@ public class Main extends PApplet {
 				active = closest;
 				if (prevActive != null && active != null) {
 					if (traverse) {
-						//mostRecentTraversal = g.traverseGraph(prevActive, active);
-						mostRecentTraversal = g.getTraversalMap(prevActive, active);
+						mostRecentTraversal = g.traverseGraph(prevActive, active);
+						//mostRecentTraversal = g.getTraversalMap(prevActive, active);
 					} else {
 						g.addConnection(active, prevActive);
 					}

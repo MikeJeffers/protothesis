@@ -69,5 +69,10 @@ public class NodeC implements Node{
 	public List<Node> getNeighbors() {
 		return this.neighbors;
 	}
+	
+	@Override
+	public String toString(){
+		return this.pt.toString();
+	}
 
 }

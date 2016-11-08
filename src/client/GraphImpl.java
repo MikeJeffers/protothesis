@@ -128,7 +128,7 @@ public class GraphImpl implements Graph {
 
 	@Override
 	public List<Node> traverseGraph(Node start, Node end) {
-		System.out.println(bfsMap(start, end));
+		// System.out.println(bfsMap(start, end));
 		return dfs(start, end);
 	}
 
@@ -161,39 +161,94 @@ public class GraphImpl implements Graph {
 		return Float.NaN;
 	}
 
+	//Fucking works now!
 	private List<Node> dfs(Node a, Node b) {
 		Stack<Node> stack = new Stack<Node>();
 		List<Node> visited = new ArrayList<Node>();
+		List<Node> path = new ArrayList<Node>();
+		stack.push(a);
+		while (!stack.isEmpty()) {
+			Node n = stack.pop();
+			if (!visited.contains(n)) {
+				visited.add(n);
+				path.add(n);
+				if (n.equals(b)) {
+
+					return path;
+				}
+				List<Node> neighbors = getNeighbors(n);
+
+				boolean newNodesFound = false;
+				for (Node v : neighbors) {
+					if (!visited.contains(v) && !stack.contains(v)) {
+						stack.push(v);
+						newNodesFound = true;
+					}
+				}
+				if (!newNodesFound) {
+					Node top = stack.peek();
+					List<Node> newPath = new ArrayList<Node>();
+					for (Node v : path) {
+						newPath.add(v);
+						if (v.getNeighbors().contains(top)) {
+							break;
+						}
+					}
+					path = newPath;
+				}
+
+			}
+		}
+		return path;
+	}
+
+	private Map<Node, Integer> dfsMap(Node a, Node b) {
+		Stack<Node> stack = new Stack<Node>();
+		List<Node> visited = new ArrayList<Node>();
+		List<Node> path = new ArrayList<Node>();
 		Map<Node, Integer> map = new HashMap<Node, Integer>();
 		stack.push(a);
 		map.put(a, 0);
 		while (!stack.isEmpty()) {
 			Node n = stack.pop();
-			int step = map.get(n);
+			int step = stack.size();
 			if (!visited.contains(n)) {
 				visited.add(n);
+				path.add(n);
 				if (n.equals(b)) {
 					System.out.println(map);
-					return visited;
+					return map;
 				}
 				List<Node> neighbors = getNeighbors(n);
-				for (Node v : neighbors) {
-					if (!visited.contains(v)) {
-						stack.push(v);
-						map.put(v, step + 1);
+				if (!neighbors.isEmpty()) {
+					for (Node v : neighbors) {
+						if (!visited.contains(v) && !stack.contains(v)) {
+							stack.push(v);
+							map.put(v, step + 1);
+						}
+					}
+				} else {
+					Node top = stack.peek();
+					List<Node> newPath = new ArrayList<Node>();
+					for (Node v : path) {
+						newPath.add(v);
+						if (v.getNeighbors().contains(top)) {
+							break;
+						}
 					}
 				}
+
 			}
 
 		}
 		System.out.println(map);
-		return visited;
-
+		return map;
 	}
 
 	@Override
 	public Map<Node, Integer> getTraversalMap(Node start, Node end) {
-		return bfsMap(start, end);
+		return dfsMap(start, end);
+		// return bfsMap(start, end);
 	}
 
 	private Map<Node, Integer> bfsMap(Node a, Node b) {
@@ -216,7 +271,7 @@ public class GraphImpl implements Graph {
 			} else {
 				step = 0;
 			}
-			
+
 			if (current.equals(b)) {
 				return visited;
 			}
