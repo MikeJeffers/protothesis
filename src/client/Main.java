@@ -22,6 +22,7 @@ public class Main extends PApplet {
 
 	public static void main(String[] args) {
 		PApplet.main("client.Main");
+		
 	}
 
 	public void settings() {

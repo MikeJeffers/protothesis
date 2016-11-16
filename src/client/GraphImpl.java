@@ -161,7 +161,7 @@ public class GraphImpl implements Graph {
 		return Float.NaN;
 	}
 
-	//Fucking works now!
+	// Fucking works now!
 	private List<Node> dfs(Node a, Node b) {
 		Stack<Node> stack = new Stack<Node>();
 		List<Node> visited = new ArrayList<Node>();
@@ -186,17 +186,18 @@ public class GraphImpl implements Graph {
 					}
 				}
 				if (!newNodesFound) {
-					Node top = stack.peek();
-					List<Node> newPath = new ArrayList<Node>();
-					for (Node v : path) {
-						newPath.add(v);
-						if (v.getNeighbors().contains(top)) {
-							break;
+					if (!stack.isEmpty()) {
+						Node top = stack.peek();
+						List<Node> newPath = new ArrayList<Node>();
+						for (Node v : path) {
+							newPath.add(v);
+							if (v.getNeighbors().contains(top)) {
+								break;
+							}
 						}
+						path = newPath;
 					}
-					path = newPath;
 				}
-
 			}
 		}
 		return path;
